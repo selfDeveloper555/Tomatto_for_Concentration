@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Pomodoro Timer</title>
+</head>
+<body>
+    <!-- контейнер обертки -->
+    <div class="wrapper">
+        <!-- контейнер с заголовком -->
+        <div class="container">
+            <h1>Pomodoro Timer</h1>
+        </div>
+        <!-- контейнер с кнопками -->
+        <div class="buttons-container">
+            <button class="start-btn" id="start-btn">Start</button>
+            <button class="stop-btn" id="stop-btn">Stop</button>
+            <button class="reset-btn" id="reset-btn">Reset</button>
+        </div>
+        <!-- контейнер с таймером -->
+        <div class="timer-container" id="timer-container">25:00</div>
+        <!-- контейнер с настройкой рабочей времени и перерыва -->
+        <div class="settings">
+            <div>
+                <label for="workTime">Время работы (мин):</label>
+                <input type="number" id="workTime" value="25" min="1">
+            </div>
+            <div>
+                <label for="shortBreak">Короткий перерыв (мин):</label>
+                <input type="number" id="shortBreak" value="5" min="1">
+            </div>
+            <div>
+                <label for="longBreak">Длинный перерыв (мин):</label>
+                <input type="number" id="longBreak" value="15" min="1">
+            </div>
+        </div>
+    </div>
+    <script src="javaScript.js"></script>
+</body>
+</html>
