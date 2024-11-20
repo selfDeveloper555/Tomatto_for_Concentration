@@ -43,6 +43,7 @@ function startTimer() {
             // уведомление  о том что время истекло
             alert('время вышло');
             shortBreakTimer();  // запускаем функцию короткого перерыва
+            contCycle();  // запускаем функцию подсчета циклов 
         }
 
     }, 1000)
@@ -63,13 +64,13 @@ function resetTimer() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     time.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-    cycleCount = []; // сбрасываем массив циклов при нажатии на кнопку ресет
     console.log(cycleCount)
 }
 
 // реализация функции отсчета короткого перерыва если основной таймер закончился 
 
 function shortBreakTimer() {
+    clearInterval(timerId);
     // получаем значение из инпута
     timeLeft = parseInt(shortBreak.value) * 60;
     timerId = setInterval(() => {
@@ -88,13 +89,50 @@ function shortBreakTimer() {
     }, 1000) 
 }
 
+// реализация функции отсчета длинного перерива если прошло 4 цикла
+function longBreakTimer() {
+    clearInterval(timerId);
+    timeLeft = parseInt(longBreak.value) * 60;
+    timerId = setInterval(() => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        time.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        if (timeLeft === 0) {
+            clearInterval(timerId);
+            timerId = null;
+            //  уведомление с кнопкой да или нет
+            const userAnswer = confirm(` длинный перерыв закончился,
+                Хотите начать новый цикл?`);
+                 if (userAnswer) {
+                    resetTimer();
+                    startTimer();
+                 } else {
+                    alert('Правильно отдохни. Но не забывай про режим ');
+                    resetTimer();
+                 }
+        }
+    }, 1000)
+}
+
+
 // подсчёт циклов
 function contCycle() {
-
+    if (cycleCount.length === 4) {
+        longBreakTimer();
+        cycleCount = [];
+        alert(" длинный перерыв начался");
+        console.log(" длинный перерыв начался");
+        console.log(cycleCount);
+    }
 }
 
 
 // обработчики событий на странице
 startBtn.addEventListener('click', startTimer);
 stopBtn.addEventListener('click', stopTimer);
-resetBtn.addEventListener('click', resetTimer);
+resetBtn.addEventListener('click',() => {
+    resetTimer();
+    cycleCount = []; // сбрасываем массив циклов при нажатии на кнопку ресет
+    console.log(cycleCount);
+});
