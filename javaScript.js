@@ -18,7 +18,7 @@ function updateTimer() {
     const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     document.getElementById('timer-container').textContent = timeString;
 }
-
+// функция для обновления прогресс бара
 function updateProgressBar() {
     const progressBar = document.getElementById('progress-bar');
     const totalTime = parseInt(workTime.value) * 60; // Общее время в секундах
