@@ -1,11 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh; /* Минимальная высота на весь экран */
+    margin: 0;
+    display: flex; /* Используем флексбокс */
+}
 
 .wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    width: 100%;
+    /* Отступы по краям для мобильных устройств */
+    padding: 20px;
     /* background-color: #FFCF48; */
     background: -webkit-linear-gradient(135deg, rgb(120, 189, 174) 7%, rgb(172, 208, 55), rgb(208, 231, 76));
     background: -moz-linear-gradient(135deg, rgb(120, 189, 174) 7%, rgb(172, 208, 55), rgb(208, 231, 76));
@@ -13,6 +26,75 @@
     font-family: Arial, Helvetica, sans-serif;
     color: #000000;
     font-size: 20px;
+    border: 3px solid #ff7d7d;
+      /* Поддержка различных браузеров */
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      
+      /* Плавное изменение размеров */
+      transition: padding 0.3s ease;
+}
+
+/* Медиа-запросы для разных размеров экрана */
+@media (max-width: 768px) {
+    .wrapper {
+        padding: 15px;
+    }
+    .buttons-container{
+        flex-direction: column;
+    }
+    .settings{
+        font-size: 16px;
+    }
+    .timer{
+        font-size: 30px;
+    }   
+    .start-btn{
+        padding: 5px 10px;
+    }
+    .stop-btn{
+        padding: 5px 10px;
+    }
+    .reset-btn{
+        padding: 5px 10px;
+    }   
+    input[type="number"]{
+        width: 50px;
+    }  
+    .progress-bar-container {
+        width: 80%; /* На мобильных будет занимать 80% ширины экрана */
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding: 10px;
+    }
+    .buttons-container{
+        flex-direction: column;
+    }
+    .settings{
+        font-size: 16px;
+    }
+    .timer{
+        font-size: 30px;
+    }   
+    .start-btn{
+        padding: 5px 10px;
+    }
+    .stop-btn{
+        padding: 5px 10px;
+    }
+    .reset-btn{
+        padding: 5px 10px;
+    }   
+    input[type="number"]{
+        width: 50px;
+    }    
+    .progress-bar-container {
+        width: 80%; 
+    }   
 }
 
 .container {
@@ -26,6 +108,31 @@
     font-size: 150px;
     font-weight: bold;
     color: #000000;
+    
+}
+
+
+.timer {
+    font-size: 48px;
+    color: rgb(0, 0, 0);
+    font-family: Arial, sans-serif;
+}
+
+.progress-bar-container {
+    width: 400px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 20px;
+    margin: 20px auto;
+    margin-top: 20px;
+}
+
+.progress-bar {  
+    height: 50%;
+    width: 0;
+    background-color: #4caf50;
+    transition: width 0.5s ease;
 }
 
 .buttons-container {
@@ -106,3 +213,4 @@ input[type="number"] {
     text-align: center;
     color: #000000;
 }
+

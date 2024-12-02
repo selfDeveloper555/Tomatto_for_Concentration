@@ -11,6 +11,21 @@ let timerId = null;
 let isPaused = false; // переменная для отслеживания состояния паузы
 let cycleCount = []; // массив для хранения количества циклов
 
+// Функция для обновления отображения времени
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('timer-container').textContent = timeString;
+}
+
+function updateProgressBar() {
+    const progressBar = document.getElementById('progress-bar');
+    const totalTime = parseInt(workTime.value) * 60; // Общее время в секундах
+    const percentage = (timeLeft / totalTime) * 100;
+    progressBar.style.width = percentage + '%';
+}
+
 // Создаем функции отсчета времени
 function startTimer() {
     // если таймер уже запущен не создаем новый
@@ -25,6 +40,8 @@ function startTimer() {
     timerId = setInterval (()=>{
         // уменьшаем оставшееся время 
         timeLeft--;
+        updateProgressBar();
+        updateTimer();
 
         // конвертируем в минуты и секунды
         const minutes = Math.floor(timeLeft / 60);
@@ -61,10 +78,12 @@ function resetTimer() {
     stopTimer();
     isPaused = false; // сбрасываем состояние паузы
     timeLeft = parseInt(workTime.value) * 60;
+    updateTimer();
+    updateProgressBar();
+    progressBar.style.width = '100%'; // Устанавливаем шкалу на 100% при сбросе
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     time.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-    console.log(cycleCount)
 }
 
 // реализация функции отсчета короткого перерыва если основной таймер закончился 
