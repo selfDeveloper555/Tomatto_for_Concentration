@@ -10,6 +10,7 @@ let timeLeft; // оставшееяся время в секундах
 let timerId = null; 
 let isPaused = false; // переменная для отслеживания состояния паузы
 let cycleCount = []; // массив для хранения количества циклов
+let currentMode = "work"; // текущий режим работы
 
 // Функция для обновления отображения времени
 function updateTimer() {
@@ -28,121 +29,155 @@ function updateProgressBar() {
 
 // Создаем функции отсчета времени
 function startTimer() {
-    // если таймер уже запущен не создаем новый
     if (timerId !== null) {
         return;
     }
-    // Если это первый запуск то получаем значение из инпута
+    
+    // Устанавливаем начальное время только если не на паузе
     if(!isPaused) {
-        timeLeft = parseInt(workTime.value) * 60;
+        if(currentMode === 'work') {
+            timeLeft = parseInt(workTime.value) * 60;
+        } else if(currentMode === 'shortBreak') {
+            timeLeft = parseInt(shortBreak.value) * 60;
+        } else if(currentMode === 'longBreak') {
+            timeLeft = parseInt(longBreak.value) * 60;
+        }
     }
 
-    timerId = setInterval (()=>{
-        // уменьшаем оставшееся время 
-        timeLeft--;
-        updateProgressBar();
-        updateTimer();
-
-        // конвертируем в минуты и секунды
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-
-        // обновляем отоброжение таймера
-        time.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-        // если время истекло
+    timerId = setInterval(() => {
+        if(timeLeft > 0) {
+            timeLeft--;
+            updateProgressBar();
+            updateTimer();
+        }
+        
         if (timeLeft === 0) {
             clearInterval(timerId);
-            timerId = null;  // сбрасываем таймер так как он закончился
-            isPaused = true; // переводим в состояние паузы при нажатии на кнопку стоп
-            cycleCount.push(1+cycleCount.length); // увеличиваем количество циклов
-            console.log(cycleCount);
-            // уведомление  о том что время истекло
-            alert('время вышло');
-            shortBreakTimer();  // запускаем функцию короткого перерыва
-            contCycle();  // запускаем функцию подсчета циклов 
-        }
+            timerId = null;
 
-    }, 1000)
+            if(currentMode === 'work') {
+                cycleCount.push(1);
+                console.log('Циклы:', cycleCount);
+                contCycle();
+            } else if(currentMode === 'shortBreak') {
+                currentMode = 'work';
+                alert("Перерыв закончен, пора за работу!");
+                resetTimer();
+                startTimer();
+            } else if(currentMode === 'longBreak') {
+                currentMode = 'work';
+                const userAnswer = confirm('Длинный перерыв закончен, хотите начать новый цикл?');
+                if (userAnswer) {
+                    resetTimer();
+                    startTimer();
+                } else {
+                    alert('Правильно отдохни. Но не забывай про режим');
+                    resetTimer();
+                }
+            }
+        }
+    }, 1000);
+}
+
+// функция для продолжения работы короткого перерыва
+function continueShortBreak() {
+    timerId = setInterval(() => {
+        timeLeft--;
+        updateTimer();
+        updateProgressBar();
+        if (timeLeft === 0) {
+            clearInterval(timerId);
+            timerId = null;
+            isPaused = false;
+            currentMode = 'work';
+            cycleCount.push(1+cycleCount.length);
+            alert("Перерыв закончен, пора за работу");
+            resetTimer();
+            startTimer();
+        }
+    }, 1000);
+}
+
+// функция для продолжения работы длинного перерыва
+function continueLongBreak() {
+    timerId = setInterval(() => {
+        timeLeft--;
+        updateTimer();
+        updateProgressBar();
+        if(timeLeft === 0) {
+            clearInterval(timerId);
+            timerId = null;
+            currentMode = 'work';
+            const userAnswer = confirm('Длинный перерыв закончен, хотите начать новый цикл?');
+            if (userAnswer) {
+                resetTimer();
+                startTimer();
+            } else {
+                alert(' Правильно отдохни. Но не забывай про режим ');
+                resetTimer();
+            }
+        }
+    }, 1000);
 }
 
 // функция для остановки таймера
 function stopTimer() {
-    clearInterval(timerId);
-    timerId = null;
-    isPaused = true; // переводим в состояние паузы при нажатии на кнопку стоп
+    if(timerId !== null) {
+        clearInterval(timerId);
+        timerId = null;
+        isPaused = true;
+    }
 }
 
 // функция для сброса таймера 
 function resetTimer() {
     stopTimer();
-    isPaused = false; // сбрасываем состояние паузы
+    isPaused = false;
+    currentMode = 'work';
     timeLeft = parseInt(workTime.value) * 60;
     updateTimer();
     updateProgressBar();
-    progressBar.style.width = '100%'; // Устанавливаем шкалу на 100% при сбросе
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    time.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
 }
 
 // реализация функции отсчета короткого перерыва если основной таймер закончился 
 
 function shortBreakTimer() {
     clearInterval(timerId);
-    // получаем значение из инпута
-    timeLeft = parseInt(shortBreak.value) * 60;
-    timerId = setInterval(() => {
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        time.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-        // если время истекло
-        if (timeLeft === 0) {
-            clearInterval(timerId);
-            timerId = null;
-            alert(' перерыв закончкен, пора за работу '); 
-            resetTimer();
-            startTimer(); // запускаем основной таймер
-        }
-    }, 1000) 
+    if (!isPaused) {
+        timeLeft = parseInt(shortBreak.value) * 60;
+    }
+    currentMode = "shortBreak";
+    startTimer(); // запускаем основной таймер
 }
 
 // реализация функции отсчета длинного перерива если прошло 4 цикла
 function longBreakTimer() {
-    clearInterval(timerId);
+   clearInterval(timerId);
+   if (!isPaused) {
     timeLeft = parseInt(longBreak.value) * 60;
-    timerId = setInterval(() => {
-        timeLeft--;
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        time.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-        if (timeLeft === 0) {
-            clearInterval(timerId);
-            timerId = null;
-            //  уведомление с кнопкой да или нет
-            const userAnswer = confirm(` длинный перерыв закончился,
-                Хотите начать новый цикл?`);
-                 if (userAnswer) {
-                    resetTimer();
-                    startTimer();
-                 } else {
-                    alert('Правильно отдохни. Но не забывай про режим ');
-                    resetTimer();
-                 }
-        }
-    }, 1000)
+   }
+   currentMode = 'longBreak';
+   startTimer(); // запускаем основной таймер
 }
 
 
 // подсчёт циклов
 function contCycle() {
     if (cycleCount.length === 4) {
-        longBreakTimer();
+        alert("Длинный перерыв начался!");
+        console.log("Длинный перерыв начался");
         cycleCount = [];
-        alert(" длинный перерыв начался");
-        console.log(" длинный перерыв начался");
-        console.log(cycleCount);
+        console.log("Циклы сброшены:", cycleCount);
+        currentMode = 'longBreak';
+        isPaused = false;
+        timeLeft = parseInt(longBreak.value) * 60;
+        startTimer();
+    } else {
+        alert("Короткий перерыв начался!");
+        currentMode = 'shortBreak';
+        isPaused = false;
+        timeLeft = parseInt(shortBreak.value) * 60;
+        startTimer();
     }
 }
 
