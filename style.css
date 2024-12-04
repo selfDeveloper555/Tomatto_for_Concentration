@@ -1,36 +1,25 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0; /* Убираем отступы */
+    padding: 0; /* Убираем отступы */
+    box-sizing: border-box; /* Используем box-sizing для корректного расчета размеров */
 }
 
 body {
-    min-height: 100vh; /* Минимальная высота на весь экран */
-    margin: 0;
-    display: flex; /* Используем флексбокс */
+    margin: 0; /* Убираем отступы */    
+    min-height: 100vh; /* Минимальная высота равна высоте экрана */
+    display: flex; /* Используем flexbox для центрирования */
+    justify-content: center; /* Выравнивание по центру */
+    align-items: center; /* Выравнивание по центру */
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
 }
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    width: 100%;
-    /* Отступы по краям для мобильных устройств */
-    padding: 20px;
-    /* background-color: #FFCF48; */
-    background: -webkit-linear-gradient(135deg, rgb(120, 189, 174) 7%, rgb(172, 208, 55), rgb(208, 231, 76));
-    background: -moz-linear-gradient(135deg, rgb(120, 189, 174) 7%, rgb(172, 208, 55), rgb(208, 231, 76));
-    background: linear-gradient(135deg, rgb(120, 189, 174) 7%, rgb(172, 208, 55), rgb(208, 231, 76));
-    font-family: Arial, Helvetica, sans-serif;
-    color: #000000;
-    font-size: 20px;
-    border: 3px solid #ff7d7d;
-      /* Поддержка различных браузеров */
-      -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-      flex-direction: column;
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    backdrop-filter: blur(10px); /* Размытие фона */
+    padding: 40px; /* Отступы внутри контейнера */
+    border-radius: 20px; /* Закругленные углы */
+    text-align: center; /* Выравнивание текста по центру */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Тень */
       
       /* Плавное изменение размеров */
       transition: padding 0.3s ease;
@@ -39,28 +28,28 @@ body {
 /* Медиа-запросы для разных размеров экрана */
 @media (max-width: 768px) {
     .wrapper {
-        padding: 15px;
+        padding: 15px; /* Уменьшаем отступы внутри контейнера */
     }
     .buttons-container{
-        flex-direction: column;
+        flex-direction: column; /* Располагаем элементы в столбец */
     }
     .settings{
-        font-size: 16px;
+        font-size: 16px; /* Уменьшаем размер шрифта */
     }
     .timer{
-        font-size: 30px;
+        font-size: 30px; /* Уменьшаем размер шрифта */
     }   
     .start-btn{
-        padding: 5px 10px;
+        padding: 5px 10px; /* Уменьшаем отступы внутри кнопки */
     }
     .stop-btn{
-        padding: 5px 10px;
+        padding: 5px 10px; /* Уменьшаем отступы внутри кнопки */
     }
     .reset-btn{
-        padding: 5px 10px;
+        padding: 5px 10px; /* Уменьшаем отступы внутри кнопки */
     }   
     input[type="number"]{
-        width: 50px;
+        width: 50px; /* Уменьшаем ширину поля ввода */
     }  
     .progress-bar-container {
         width: 80%; /* На мобильных будет занимать 80% ширины экрана */
@@ -69,148 +58,177 @@ body {
 
 @media (max-width: 480px) {
     .wrapper {
-        padding: 10px;
+        padding: 10px; /* Уменьшаем отступы внутри контейнера */
     }
     .buttons-container{
-        flex-direction: column;
+        flex-direction: column; /* Располагаем элементы в столбец */
     }
     .settings{
-        font-size: 16px;
+        font-size: 16px; /* Уменьшаем размер шрифта */
     }
     .timer{
-        font-size: 30px;
+        font-size: 30px; /* Уменьшаем размер шрифта */  
     }   
     .start-btn{
-        padding: 5px 10px;
+        padding: 5px 10px; /* Уменьшаем отступы внутри кнопки */
     }
     .stop-btn{
-        padding: 5px 10px;
+        padding: 5px 10px; /* Уменьшаем отступы внутри кнопки */
     }
     .reset-btn{
-        padding: 5px 10px;
+        padding: 5px 10px; /* Уменьшаем отступы внутри кнопки */
     }   
     input[type="number"]{
-        width: 50px;
+        width: 50px; /* Уменьшаем ширину поля ввода */
     }    
     .progress-bar-container {
-        width: 80%; 
+        width: 80%; /* На мобильных будет занимать 80% ширины экрана */
     }   
 }
 
 .container {
-    margin-bottom: 20px;
-    font-size: 30px;
-    font-weight: bold;
+    color: rgb(0, 0, 0);
+    font-size: 2.5rem; /* Увеличиваем размер шрифта */
+    margin-bottom: 30px; /* Отступ снизу */
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+.tomato::after {
+    content: "🍅"; /* Символ */
+    font-size: 30px; /* Размер шрифта */
+    display: inline-block; /* Отображение как блочного элемента */
+    filter: saturate(1.4) contrast(1.); /* Насыщенность и контраст */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавное изменение */
+    text-shadow: 0 0 10px rgba(255,99,71,0.2); /* Тень */
+    vertical-align: middle; /* Выравнивание по вертикали */
+}
+
+.tomato:hover::after {
+    transform: translateY(-3px) rotate(8deg); /* Плавное изменение */
+    filter: saturate(1.6) contrast(1.); /* Насыщенность и контраст */
+    text-shadow: 0 0 15px rgba(255,99,71,0.4); /* Тень */
 }
 
 .timer-container {
     margin-bottom: 20px;
-    font-size: 150px;
-    font-weight: bold;
-    color: #000000;
+    font-size: 150px; /* Увеличиваем размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+    color: #000000; /* Цвет текста */
+    
+}
+hr{
+    border: none; /* Убираем границу */
+    height: 2px; /* Высота */
+    background-color: #000000; /* Цвет фона */
+    margin: 10px 0; /* Отступы сверху и снизу */
     
 }
 
 
 .timer {
-    font-size: 48px;
-    color: rgb(0, 0, 0);
-    font-family: Arial, sans-serif;
+    font-size: 48px; /* Увеличиваем размер шрифта */
+    color: rgb(0, 0, 0); /* Цвет текста */
+    font-family: Arial, sans-serif; /* Шрифт */
 }
 
 .progress-bar-container {
-    width: 400px;
-    background-color: rgb(172, 208, 55);
-    border-radius: 5px;
-    overflow: hidden;
-    height: 20px;
-    margin: 20px auto;
-    margin-top: 20px;
+    width: 400px; /* Ширина контейнера */   
+    background-color: #A5D6A7;/* Цвет фона */
+    border-radius: 5px; /* Закругленные углы */
+    overflow: hidden; /* Скрываем содержимое, если оно выходит за пределы */
+    height: 20px; /* Высота */
+    margin: 20px auto; /* Центрирование */
+    margin-top: 20px; /* Отступ сверху */
 }
 
 .progress-bar {  
-    height: 100%;
-    width: 0;
-    background-color: red;
-    transition: width 0.5s ease;
+    height: 100%; /* Высота */  
+    width: 0; /* Ширина */
+    background-color: #D9534F; /* Цвет фона */
+    transition: width 0.5s ease; /* Плавное изменение ширины */
 }
 
 .buttons-container {
-    display: flex;
-    gap: 10px;
+    display: flex; /* Используем flexbox для расположения элементов */
+    gap: 15px; /* Отступы между элементами */
+    justify-content: center; /* Выравнивание по центру */
+    margin-top: 30px; /* Отступ сверху */
+
 }
 
 .start-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #4A90E2;
-    color: #000000;
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    background-color: #4A90E2; /* Цвет фона */
+    color: #000000; /* Цвет текста */
     transition: background-color 0.3s ease;
-    -webkit-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); 
-    -moz-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); 
-    box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31);
+    -webkit-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для WebKit */
+    -moz-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для Mozilla */
+    box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для остальных браузеров */
 }
 .stop-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #D9534F;
-    color: #000000;
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    background-color: #D9534F; /* Цвет фона */
+    color: #000000; /* Цвет текста */
     transition: background-color 0.3s ease;
-    -webkit-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); 
-    -moz-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); 
-    box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31);
+    -webkit-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для WebKit */
+    -moz-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для Mozilla */
+    box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для остальных браузеров */
 }
 .reset-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #A9A9A9;
-    color: #000000;
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    background-color: #A9A9A9; /* Цвет фона */
+    color: #000000; /* Цвет текста */
     transition: background-color 0.3s ease;
     -webkit-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); 
-    -moz-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); 
-    box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31);
+    -moz-box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для Mozilla */
+    box-shadow: 15px 15px 11px 1px rgba(0, 0, 0, 0.31); /* Тень для остальных браузеров */
 
 }
 
 .start-btn:hover {
-    background-color: #19f015;
+    background-color: #19f015; /* Изменение цвета фона при наведении */
 
 }
 .stop-btn:hover {
-    background-color: #d11313;
+    background-color: #d11313; /* Изменение цвета фона при наведении */
 
 }
 .reset-btn:hover {
-    background-color: #2b9777;
+    background-color: #2b9777; /* Изменение цвета фона при наведении */
 }
 
 .settings {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-    font-size: 20px;
-    align-items: center;
-    justify-content: center;
+    display: flex; /* Используем flexbox для расположения элементов */
+    flex-direction: column; /* Располагаем элементы в столбец */
+    gap: 10px; /* Отступы между элементами */
+    margin-bottom: 20px; /* Отступ снизу */
+    font-size: 20px; /* Размер шрифта */
+    align-items: center; /* Выравнивание по центру */
+    justify-content: center; /* Выравнивание по центру */
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
 }
 
 input[type="number"] {
-    width: 65px;
-    background-color: #c7d5c2;
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    font-size: 16px;
-    text-align: center;
-    color: #000000;
+    width: 65px; /* Ширина поля ввода */
+    background-color: #c7d5c2; /* Цвет фона */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 5px; /* Отступы внутри поля ввода */
+    font-size: 16px; /* Размер шрифта */
+    text-align: center; /* Выравнивание текста по центру */
+    color: #000000; /* Цвет текста */
 }
 
