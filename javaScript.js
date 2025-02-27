@@ -6,11 +6,14 @@ const workTime = document.getElementById('workTime');
 const shortBreak = document.getElementById('shortBreak');
 const longBreak = document.getElementById('longBreak');
 
-let timeLeft; // оставшееяся время в секундах
+let timeLeft; // оставшееся время в секундах
 let timerId = null; 
 let isPaused = false; // переменная для отслеживания состояния паузы
 let cycleCount = []; // массив для хранения количества циклов
 let currentMode = "work"; // текущий режим работы
+
+// Создаем объект Audio для звукового уведомления
+const notificationSound = document.getElementById('notificationSound'); // Укажите путь к вашему звуковому файлу
 
 // Функция для обновления отображения времени
 function updateTimer() {
@@ -19,6 +22,7 @@ function updateTimer() {
     const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     document.getElementById('timer-container').textContent = timeString;
 }
+
 // функция для обновления прогресс бара
 function updateProgressBar() {
     const progressBar = document.getElementById('progress-bar');
@@ -55,25 +59,70 @@ function startTimer() {
             clearInterval(timerId);
             timerId = null;
 
-            if(currentMode === 'work') {
+            if (currentMode === 'work') {
                 cycleCount.push(1);
                 console.log('Циклы:', cycleCount);
                 contCycle();
-            } else if(currentMode === 'shortBreak') {
+            } else if (currentMode === 'shortBreak') {
                 currentMode = 'work';
-                alert("Перерыв закончен, пора за работу!");
-                resetTimer();
-                startTimer();
-            } else if(currentMode === 'longBreak') {
+                
+                // Воспроизводим звук перед уведомлением
+                notificationSound.currentTime = 0; // Перематываем звук в начало
+                notificationSound.volume = 1.0;    // Устанавливаем громкость на максимум
+                
+                let played = false;
+                
+                // Функция показа уведомления
+                const showAlert = function() {
+                    if (!played) {
+                        played = true;
+                        alert("Перерыв закончен, пора за работу!");
+                        resetTimer();
+                        startTimer();
+                    }
+                };
+                
+                // Обработчик события окончания воспроизведения звука
+                notificationSound.onended = showAlert;
+                
+                // Дублирующий таймер на случай, если звук не воспроизведется
+                setTimeout(showAlert, 3000);
+                
+                // Запускаем воспроизведение
+                notificationSound.play();
+                
+            } else if (currentMode === 'longBreak') {
                 currentMode = 'work';
-                const userAnswer = confirm('Длинный перерыв закончен, хотите начать новый цикл?');
-                if (userAnswer) {
-                    resetTimer();
-                    startTimer();
-                } else {
-                    alert('Правильно отдохни. Но не забывай про режим');
-                    resetTimer();
-                }
+                
+                // Воспроизводим звук перед уведомлением
+                notificationSound.currentTime = 0; // Перематываем звук в начало
+                notificationSound.volume = 1.0;    // Устанавливаем громкость на максимум
+                
+                let played = false;
+                
+                // Функция показа уведомления
+                const showConfirm = function() {
+                    if (!played) {
+                        played = true;
+                        const userAnswer = confirm('Длинный перерыв закончен, хотите начать новый цикл?');
+                        if (userAnswer) {
+                            resetTimer();
+                            startTimer();
+                        } else {
+                            alert('Правильно отдохни. Но не забывай про режим');
+                            resetTimer();
+                        }
+                    }
+                };
+                
+                // Обработчик события окончания воспроизведения звука
+                notificationSound.onended = showConfirm;
+                
+                // Дублирующий таймер на случай, если звук не воспроизведется
+                setTimeout(showConfirm, 3000);
+                
+                // Запускаем воспроизведение
+                notificationSound.play();
             }
         }
     }, 1000);
@@ -90,10 +139,32 @@ function continueShortBreak() {
             timerId = null;
             isPaused = false;
             currentMode = 'work';
-            cycleCount.push(1+cycleCount.length);
-            alert("Перерыв закончен, пора за работу");
-            resetTimer();
-            startTimer();
+            cycleCount.push(1 + cycleCount.length);
+            
+            // Воспроизводим звук перед уведомлением
+            notificationSound.currentTime = 0; // Перематываем звук в начало
+            notificationSound.volume = 1.0;    // Устанавливаем громкость на максимум
+            
+            let played = false;
+            
+            // Функция показа уведомления
+            const showAlert = function() {
+                if (!played) {
+                    played = true;
+                    alert("Перерыв закончен, пора за работу");
+                    resetTimer();
+                    startTimer();
+                }
+            };
+            
+            // Обработчик события окончания воспроизведения звука
+            notificationSound.onended = showAlert;
+            
+            // Дублирующий таймер на случай, если звук не воспроизведется
+            setTimeout(showAlert, 3000);
+            
+            // Запускаем воспроизведение
+            notificationSound.play();
         }
     }, 1000);
 }
@@ -108,14 +179,36 @@ function continueLongBreak() {
             clearInterval(timerId);
             timerId = null;
             currentMode = 'work';
-            const userAnswer = confirm('Длинный перерыв закончен, хотите начать новый цикл?');
-            if (userAnswer) {
-                resetTimer();
-                startTimer();
-            } else {
-                alert(' Правильно отдохни. Но не забывай про режим ');
-                resetTimer();
-            }
+            
+            // Воспроизводим звук перед уведомлением
+            notificationSound.currentTime = 0; // Перематываем звук в начало
+            notificationSound.volume = 1.0;    // Устанавливаем громкость на максимум
+            
+            let played = false;
+            
+            // Функция показа уведомления
+            const showConfirm = function() {
+                if (!played) {
+                    played = true;
+                    const userAnswer = confirm('Длинный перерыв закончен, хотите начать новый цикл?');
+                    if (userAnswer) {
+                        resetTimer();
+                        startTimer();
+                    } else {
+                        alert('Правильно отдохни. Но не забывай про режим');
+                        resetTimer();
+                    }
+                }
+            };
+            
+            // Обработчик события окончания воспроизведения звука
+            notificationSound.onended = showConfirm;
+            
+            // Дублирующий таймер на случай, если звук не воспроизведется
+            setTimeout(showConfirm, 3000);
+            
+            // Запускаем воспроизведение
+            notificationSound.play();
         }
     }, 1000);
 }
@@ -140,7 +233,6 @@ function resetTimer() {
 }
 
 // реализация функции отсчета короткого перерыва если основной таймер закончился 
-
 function shortBreakTimer() {
     clearInterval(timerId);
     if (!isPaused) {
@@ -150,37 +242,65 @@ function shortBreakTimer() {
     startTimer(); // запускаем основной таймер
 }
 
-// реализация функции отсчета длинного перерива если прошло 4 цикла
+// реализация функции отсчета длинного перерыва если прошло 4 цикла
 function longBreakTimer() {
-   clearInterval(timerId);
-   if (!isPaused) {
-    timeLeft = parseInt(longBreak.value) * 60;
-   }
-   currentMode = 'longBreak';
-   startTimer(); // запускаем основной таймер
+    clearInterval(timerId);
+    if (!isPaused) {
+        timeLeft = parseInt(longBreak.value) * 60;
+    }
+    currentMode = 'longBreak';
+    startTimer(); // запускаем основной таймер
 }
-
 
 // подсчёт циклов
 function contCycle() {
     if (cycleCount.length === 4) {
-        alert("Длинный перерыв начался!");
-        console.log("Длинный перерыв начался");
-        cycleCount = [];
-        console.log("Циклы сброшены:", cycleCount);
-        currentMode = 'longBreak';
-        isPaused = false;
-        timeLeft = parseInt(longBreak.value) * 60;
-        startTimer();
+        // Сначала воспроизводим звук
+        notificationSound.currentTime = 0;
+        notificationSound.volume = 1.0;
+        
+        let played = false;
+        
+        const showAlert = function() {
+            if (!played) {
+                played = true;
+                alert("Длинный перерыв начался!");
+                console.log("Длинный перерыв начался");
+                cycleCount = [];
+                console.log("Циклы сброшены:", cycleCount);
+                currentMode = 'longBreak';
+                isPaused = false;
+                timeLeft = parseInt(longBreak.value) * 60;
+                startTimer();
+            }
+        };
+        
+        notificationSound.onended = showAlert;
+        setTimeout(showAlert, 3000);
+        notificationSound.play();
     } else {
-        alert("Короткий перерыв начался!");
-        currentMode = 'shortBreak';
-        isPaused = false;
-        timeLeft = parseInt(shortBreak.value) * 60;
-        startTimer();
+        // Сначала воспроизводим звук
+        notificationSound.currentTime = 0;
+        notificationSound.volume = 1.0;
+        
+        let played = false;
+        
+        const showAlert = function() {
+            if (!played) {
+                played = true;
+                alert("Короткий перерыв начался!");
+                currentMode = 'shortBreak';
+                isPaused = false;
+                timeLeft = parseInt(shortBreak.value) * 60;
+                startTimer();
+            }
+        };
+        
+        notificationSound.onended = showAlert;
+        setTimeout(showAlert, 3000);
+        notificationSound.play();
     }
 }
-
 
 // обработчики событий на странице
 startBtn.addEventListener('click', startTimer);
